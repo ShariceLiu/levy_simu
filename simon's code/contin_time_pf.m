@@ -7,11 +7,11 @@ close all
 % Continuous time Levy model
 
 M=1000;
-alpha=1.4;
-mu_W=1;
-sigma_W=2.5;
+alpha=1.4; % 1.4
+mu_W=0.1; % 1
+sigma_W=0.033; % 2.5
 T=500;
-
+N_particles=100;
 
 % Dimension of observation vector:
 M_v=1;
@@ -51,8 +51,8 @@ M3=[1/theta^2 0; 0 0];
 v1=[1/theta;1]; 
 v2=[-1/theta; 0];
 
-time_axis=[0; sort(T*rand(T-1,1))];
-%time_axis=[0:T];
+% time_axis=[0; sort(T*rand(T-1,1))];
+time_axis=[0:T];
 
 % Initial value:
 X_true=[0; 0];
@@ -108,7 +108,7 @@ subplot(212)
 %plot(time_axis,X_true(2,:)')
 title('dX_t/dt, \theta=-0.3')
 
-N_particles=100;
+
 
 % Initial state for Kalman filter:
 
@@ -175,6 +175,7 @@ for t=2:length(time_axis)
     log_like_inc(n,t)=log_bit_like(n,t)-(alpha_W+t/2)*log(beta_W-sum(exp_bit_like(n,1:t)))+(alpha_W+(t-1)/2)*log(beta_W-sum(exp_bit_like(n,1:t-1)))+gammaln(t/2+alpha_W)-gammaln((t-1)/2+alpha_W); 
    
     particle_weight(n,t)=particle_weight(n,t-1)+log_like_inc(n,t);
+    % particle_weight(n,t)=particle_weight(n,t-1)+log_like(n,t);
     
     
    end
