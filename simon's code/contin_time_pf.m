@@ -7,10 +7,10 @@ close all
 % Continuous time Levy model
 
 M=1000;
-alpha=1.4; % 1.4
+alpha=0.9; % 1.4
 mu_W=0.1; % 1
 sigma_W=0.033; % 2.5
-T=500;
+T=200;
 N_particles=100;
 
 % Dimension of observation vector:
