@@ -1,5 +1,4 @@
 import numpy as np
-import scipy
 
 
 def returnQ(delta_t, l, k_mu1, k_mu2):

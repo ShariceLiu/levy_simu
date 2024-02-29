@@ -170,7 +170,7 @@ def simulate_VGSSM(N=500, T = 1.0, sigma = 1.0, mu = [0.1,0.05], k_v = 10):
 
     return x_ns, t_ns, y_ns
 
-def particle_filter(y_ns, N = 500, num_particles = 20, T = 1):
+def particle_filter(y_ns, N = 200, num_particles = 10, T = 1):
     n_mus = []
     n_Ps = []
     n_ws = []
