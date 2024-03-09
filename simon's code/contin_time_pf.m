@@ -17,7 +17,7 @@ N_particles=100;
 M_v=1;
 
 % Observation noise scaling parameter:
-kappa_V=10;
+kappa_V=100;
 
 sigma_v=kappa_V*sigma_W;
 
@@ -151,18 +151,19 @@ for t=2:length(time_axis)
     drift_correct{n}(:,t)=drift_correct_tmp;
     
     Trans{n,t}=[exp_A_delta_t{t} m{n}(:,t)-drift_correct{n}(:,t);0 0 1];
-    %H{n,t}=[R{n,t}' [0; 0];0 0 0]./sigma_W;
-    H{n,t}=[R{n,t}' [0; 0];0 0 0];
+    H{n,t}=[R{n,t}' [0; 0];0 0 0]./sigma_W; 
+    % H{n,t}=[R{n,t}' [0; 0];0 0 0]; % why?
     
    % Kalman filter to estimate state: 
     [a{n}(:,t),P{n,t},a_pred{n}(:,t),P_pred{n,t},log_like(n,t),y_samp(n,t),exp_bit_like(n,t),log_bit_like(n,t)]=kalman_update_pred(a{n}(:,t-1),P{n,t-1},y(t),Z,C_v,{Trans{n,t}},{H{n,t}},{C_e});
     
    % Posterior parameters for sigma_W^2 (IG):
     alpha_W_post=alpha_W+t/2;
-    beta_W_post(n)=beta_W+sum(exp_bit_like(n,:));
+    %beta_W_post(n)=-beta_W-sum(exp_bit_like(n,:));
+    beta_W_post(n)=beta_W-sum(exp_bit_like(n,:));
     
    % mean and var of posterior for sigma_W^2: 
-    mean_sigma_W_post(n,t)=max(0,-beta_W_post(n)/(alpha_W_post-1)); 
+    mean_sigma_W_post(n,t)=max(0,beta_W_post(n)/(alpha_W_post-1)); 
     var_sigma_W_post(n,t)=max(0,mean_sigma_W_post(n,t)^2/(alpha_W_post-2)); 
     
    % Mode of likelihood: 
